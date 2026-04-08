@@ -1,5 +1,5 @@
 """
-Inference script for RNN signal upsampling model (Matched to V2 logic)
+Inference script for RNN signal upsampling model 
 """
 
 import torch
@@ -8,7 +8,7 @@ import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 
-# --- Minimal Change: Import the RNN model ---
+# Import the RNN model ---
 from rnn_model import RNNSignalUpsampler
 
 class SignalUpsampler:
@@ -22,7 +22,7 @@ class SignalUpsampler:
         self.device = torch.device(device)
         self.upsample_factor = upsample_factor
 
-        # --- Minimal Change: Initialize RNN model dynamically ---
+        # Initialize RNN model dynamically ---
         self.model = RNNSignalUpsampler(
             input_dim=2,
             hidden_dim=hidden_dim,
@@ -30,7 +30,7 @@ class SignalUpsampler:
             upsample_factor=upsample_factor
         ).to(self.device)
 
-        # --- Minimal Change: Load raw state_dict ---
+        #  Load raw state_dict ---
         checkpoint = torch.load(model_path, map_location=self.device, weights_only=True)
         if 'model_state_dict' in checkpoint:
             self.model.load_state_dict(checkpoint['model_state_dict'])
@@ -84,7 +84,7 @@ class SignalUpsampler:
         return 20 * np.log10(max_val / np.sqrt(mse)) if mse > 0 else float('inf')
 
 
-# --- Visualization Function (UNTOUCHED to ensure identical plots) ---
+# --- Visualization Function  ---
 def visualize_upsampling(low_res, upsampled, reference, output_path='upsampling_result_rnn.png', samples_to_plot=500):
     fig, axes = plt.subplots(3, 2, figsize=(16, 12))
     low_res_time = np.arange(min(samples_to_plot, len(low_res)))
@@ -122,7 +122,7 @@ def main():
     base_path = '/content/drive/MyDrive/DEEP LEARNING PROJECT/'
     
     parser = argparse.ArgumentParser()
-    # Changed default names to match your V2 requirements and direct to your folder
+   
     parser.add_argument('--model', type=str, default=base_path + 'rnn_v2_best.pt')
     parser.add_argument('--low-res', type=str, default=base_path + 'iqdatazizo20.60.txt')
     parser.add_argument('--high-res', type=str, default=base_path + 'iqdatazizo20.300.txt')
