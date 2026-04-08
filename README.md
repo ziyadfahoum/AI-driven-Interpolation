@@ -39,13 +39,18 @@ A critical finding of this project is the performance ceiling encountered during
 ---
 
 ## 🚀 How to Run
+
+Follow these steps to set up the environment, train the model, and run inference. You can copy and run these commands in your terminal:
+
 ```bash
-1. install relevent libraries 
+# 1. Install necessary libraries
 pip install torch numpy matplotlib tqdm scipy
- 2. Training:
-```bash
+
+# 2. Train the model (Replace paths with your actual data files)
 python train_rnn.py --low-res path/to/low_res.txt --high-res path/to/high_res.txt --hidden-dim 128 --epochs 100
-```bash
-3. inference
+
+# 3. Run inference and visualize results
 python inference_rnn.py --model rnn_v2_best.pt --visualize
 
+# 4. (Optional) Export results for hardware simulation
+python convert_to_txt.py
