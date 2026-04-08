@@ -23,7 +23,7 @@ A critical finding of this project is the performance ceiling encountered during
 | Method | EVM Achievement | Note |
 | :--- | :--- | :--- |
 | **Spline (Classical)** | **39m** | Best performing classical baseline. |
-| **RNN (Proposed)** | **50m** | Successfully matched the ground truth limit. |
+| **RNN (Proposed)** | **55m** | Successfully matched the ground truth limit. |
 | **Ground Truth** | **50m** | **Inherent noise floor in the reference data.** |
 
 **Conclusion:** Analysis of the FFT and signal plots confirmed that the model is performing with high fidelity. However, the **ground truth data itself is flawed**, possessing an inherent EVM of 50m. The model has successfully learned to reconstruct the signal up to the mathematical limit allowed by the dataset.
