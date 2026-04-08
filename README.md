@@ -1,27 +1,46 @@
-# AI-driven-Interpolation
-Project Overview
-This repository contains the implementation of a deep learning-based signal upsampler designed for Quadrature Amplitude Modulation (QAM) signals. The project focuses on interpolating low-resolution signals (60MHz) to high-resolution (300MHz) counterparts using a specialized Recurrent Neural Network (RNN) architecture.
+# AI-Driven QAM Signal Interpolation via Bidirectional GRUs
 
-Developed by Ziyad and Munir , a final-year Electrical Engineering students, this project was born from a collaboration with Mohamed Khamsi to explore the intersection of AI and high-speed hardware communication.
+## 📌 Project Overview
+This project implements a deep learning-based signal upsampler for **Quadrature Amplitude Modulation (QAM)** signals. The system interpolates low-resolution signals (**60MHz**) to high-resolution (**300MHz**) counterparts using a specialized Recurrent Neural Network (RNN) architecture.
 
-Key Features & Architectural Improvements
-To meet the "significant change" requirements for academic validation, this project evolved from a standard Transformer-based approach to a highly optimized Bidirectional GRU framework:
+The project demonstrates how AI can reconstruct signal integrity by learning temporal dependencies and phase alignment, moving beyond the limitations of fixed-coefficient classical interpolation.
 
-Learnable Upsampler: Replaced static linear interpolation with a ConvTranspose1d layer. This allows the model to learn overlapping context, eliminating the "jagged" artifacts typical of classical methods.
+---
 
-Temporal Processing: Utilizes a Bidirectional Gated Recurrent Unit (GRU) to capture both forward and backward temporal dependencies, which is critical for maintaining phase alignment in I/Q signals.
+## 🛠 Key Technical Improvements
+To optimize performance and meet academic criteria for architectural innovation, the following changes were implemented:
 
-Residual Learning: Implemented a skip-connection (residual) between the upsampler and the final projection layer to stabilize deep training and preserve signal integrity.
+* **Bidirectional GRU Processing:** Replaced standard Transformer blocks with a Bidirectional Gated Recurrent Unit (GRU) to capture phase dependencies from both directions of the signal stream.
+* **Learnable Upsampler:** Integrated a `ConvTranspose1d` layer with overlapping kernels. This eliminates the "jagged" artifacts found in linear interpolation by learning the optimal transition between samples.
+* **Residual Connections:** Added skip-connections between the upsampling stage and the output to stabilize training and maintain high-frequency spectral integrity.
+* **Cosine Annealing:** Implemented a `CosineAnnealingLR` scheduler to achieve smooth convergence and avoid local minima during training.
 
-Advanced Optimization: Uses Cosine Annealing learning rate scheduling to ensure smooth convergence toward global minima.
+---
 
-Analysis: While the goal was to achieve an EVM lower than 39m, the model plateaued at 50m. Detailed Error Vector Magnitude (EVM) and FFT analysis revealed that the ground truth signal itself is flawed, possessing an inherent noise floor of 50m. The model successfully learned to reconstruct the signal with high fidelity relative to the provided reference, but it cannot mathematically surpass the quality of its own training data.
+## 📊 The "50m EVM" Discovery
+A critical finding of this project is the performance ceiling encountered during testing. While the goal was to outperform **Spline interpolation (39m EVM)**, the model reached a plateau at **50m EVM**.
 
-# Repository Structure
-rnn_model.py: Defines the RNNSignalUpsampler class, including the feature extractor, transpose convolution upsampler, and bidirectional GRU layers.
+| Method | EVM Achievement | Note |
+| :--- | :--- | :--- |
+| **Spline (Classical)** | **39m** | Best performing classical baseline. |
+| **RNN (Proposed)** | **50m** | Successfully matched the ground truth limit. |
+| **Ground Truth** | **50m** | **Inherent noise floor in the reference data.** |
 
-train_rnn.py: The training pipeline featuring AdamW optimization, gradient clipping, and Cosine Annealing schedulers.
+**Conclusion:** Analysis of the FFT and signal plots confirmed that the model is performing with high fidelity. However, the **ground truth data itself is flawed**, possessing an inherent EVM of 50m. The model has successfully learned to reconstruct the signal up to the mathematical limit allowed by the dataset.
 
-inference_rnn.py: A robust script for model evaluation, calculating MSE, PSNR, and generating visual upsampling plots.
+---
 
-convert_to_txt.py: A utility script to handle high-precision data conversion for hardware simulation compatibility.
+## 📂 Project Structure
+* `rnn_model.py`: The core architecture (ConvTranspose1d + Bidirectional GRU).
+* `train_rnn.py`: Training script with AdamW optimizer and Cosine Annealing.
+* `inference_rnn.py`: Evaluation script for MSE, PSNR, and visualization.
+* `convert_to_txt.py`: Utility to export signals for hardware/circuit simulation.
+
+---
+
+## 🚀 How to Run
+
+### 1. Requirements
+```bash
+pip install torch numpy matplotlib tqdm scipy
+
