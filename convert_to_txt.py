@@ -1,4 +1,5 @@
 #this file is for converting the output signal file type from .npy to .txt#
+#this is crucial in order to check the EVM of the interpolated signal#
 import numpy as np
 import os
 
