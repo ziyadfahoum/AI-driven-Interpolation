@@ -39,12 +39,13 @@ A critical finding of this project is the performance ceiling encountered during
 ---
 
 ## 🚀 How to Run
-
-### 1. Requirements
 ```bash
+1. install relevent libraries 
 pip install torch numpy matplotlib tqdm scipy
-### 2. Training:
+ 2. Training:
+```bash
 python train_rnn.py --low-res path/to/low_res.txt --high-res path/to/high_res.txt --hidden-dim 128 --epochs 100
-### 3. inference
+```bash
+3. inference
 python inference_rnn.py --model rnn_v2_best.pt --visualize
 
