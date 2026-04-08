@@ -43,4 +43,8 @@ A critical finding of this project is the performance ceiling encountered during
 ### 1. Requirements
 ```bash
 pip install torch numpy matplotlib tqdm scipy
+### 2. Training:
+python train_rnn.py --low-res path/to/low_res.txt --high-res path/to/high_res.txt --hidden-dim 128 --epochs 100
+### 3. inference
+python inference_rnn.py --model rnn_v2_best.pt --visualize
 
