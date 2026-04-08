@@ -1,3 +1,4 @@
+#this file is for converting the output signal file type from .npy to .txt#
 import numpy as np
 import os
 
