@@ -7,13 +7,11 @@ class RNNSignalUpsampler(nn.Module):
         self.hidden_dim = hidden_dim
         self.num_layers = num_layers
         
-        # UPGRADE 1: Feature Extraction BEFORE upsampling
         self.feature_extractor = nn.Sequential(
             nn.Conv1d(input_dim, hidden_dim, kernel_size=3, padding=1),
             nn.GELU()
         )
         
-        # UPGRADE 2: Overlapping Context Upsampler
         # Kernel size 7, padding 1, stride 5 results in exactly 5x length 
         # but overlaps the edges to prevent "checkerboard" block artifacts.
         self.upsampler = nn.ConvTranspose1d(
@@ -26,7 +24,7 @@ class RNNSignalUpsampler(nn.Module):
 
         gru_dropout = dropout if num_layers > 1 else 0.0
         
-        # UPGRADE 3: Bidirectional GRU
+        #  Bidirectional GRU
         self.rnn = nn.GRU(
             input_size=hidden_dim,
             hidden_size=hidden_dim // 2, # Halved so the bidirectional concat equals hidden_dim
@@ -36,7 +34,7 @@ class RNNSignalUpsampler(nn.Module):
             bidirectional=True 
         )
 
-        # UPGRADE 4: Deep Output Projection
+        # Deep Output Projection
         self.fc_out = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim // 2),
             nn.GELU(),
@@ -58,7 +56,7 @@ class RNNSignalUpsampler(nn.Module):
         # 3. Bidirectional RNN processing
         rnn_out, _ = self.rnn(x)
         
-        # UPGRADE 5: Residual / Skip Connection
+        # Residual / Skip Connection
         # Adds the upsampled features directly to the RNN output to stabilize deep training
         out = rnn_out + x             
         
